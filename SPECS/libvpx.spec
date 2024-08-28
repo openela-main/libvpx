@@ -6,7 +6,7 @@
 Name:			libvpx
 Summary:		VP8/VP9 Video Codec SDK
 Version:		1.7.0
-Release:		10%{?dist}
+Release:		11%{?dist}
 License:		BSD
 Group:			System Environment/Libraries
 #Source0:		http://downloads.webmproject.org/releases/webm/%{name}-%{version}.tar.bz2
@@ -27,6 +27,10 @@ Patch3:			0003-CVE-2019-9371-update-libwebm.patch
 Patch4:			0004-CVE-2019-2126-update-libwebm-to-libwebm-1.0.0.27-361.patch
 Patch5:			0001-Fix-bug-with-smaller-width-bigger-size.patch
 Patch6:			0001-VP8-disallow-thread-count-changes.patch
+Patch7:			0001-Fix-integer-overflows-in-calc-of-stride_in_bytes.patch
+Patch8:			0002-Apply-stride_align-to-byte-count-not-pixel-count.patch
+Patch9:			0003-Fix-a-bug-in-alloc_size-for-high-bit-depths.patch
+Patch10:		include-limits.patch
 
 %description
 libvpx provides the VP8/VP9 SDK, which allows you to integrate your applications 
@@ -60,6 +64,10 @@ and decoder.
 %patch4 -p1 -b .0004
 %patch5 -p1 -b .0005
 %patch6 -p1 -b .0006
+%patch7 -p1 -b .0007
+%patch8 -p1 -b .0008
+%patch9 -p1 -b .0009
+%patch10 -p1 -b .0010
 
 %build
 %ifarch %{ix86}
@@ -249,13 +257,18 @@ rm -rf %{buildroot}%{_prefix}/src
 %{_bindir}/*
 
 %changelog
+* Fri Jul 5 2024 Wim Taymans <wtaymans@redhat.com> - 1.7.0-11
+- Add patch to fix integer overflows.
+- Fix compilation by including limits.h
+- Resolves: RHEL-40650
+
 * Thu Oct 5 2023 Wim Taymans <wtaymans@redhat.com> - 1.7.0-10
 - Add patch for CVE-2023-5217
-- Resolves: RHEL-10610
+- Resolves: RHEL-10612
 
 * Tue Oct 3 2023 Wim Taymans <wtaymans@redhat.com> - 1.7.0-9
 - Add patch for CVE-2023-44488
-- Resolves: RHEL-11613
+- Resolves: RHEL-11615
 
 * Wed Apr 1 2020 Wim Taymans <wtaymans@redhat.com> - 1.7.0-8
 - Resolves: rhbz#1796086, rhbz#1796100, rhbz#1796448, rhbz#1796454

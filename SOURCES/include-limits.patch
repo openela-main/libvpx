@@ -1,0 +1,11 @@
+diff -ru libvpx-1.7.0/vpx/src/vpx_image.c libvpx-1.7.0.new/vpx/src/vpx_image.c
+--- libvpx-1.7.0/vpx/src/vpx_image.c	2018-01-24 23:25:44.000000000 +0100
++++ libvpx-1.7.0.new/vpx/src/vpx_image.c	2024-08-27 15:22:25.886886526 +0200
+@@ -10,6 +10,7 @@
+ 
+ #include <stdlib.h>
+ #include <string.h>
++#include <limits.h>
+ 
+ #include "vpx/vpx_image.h"
+ #include "vpx/vpx_integer.h"
