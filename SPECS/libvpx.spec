@@ -6,7 +6,7 @@
 Name:			libvpx
 Summary:		VP8/VP9 Video Codec SDK
 Version:		1.9.0
-Release:		7%{?dist}
+Release:		8%{?dist}
 License:		BSD
 #Source0:		http://downloads.webmproject.org/releases/webm/%{name}-%{version}.tar.bz2
 Source0:		https://github.com/webmproject/libvpx/archive/v%{version}.tar.gz
@@ -25,6 +25,9 @@ BuildRequires:		doxygen, php-cli, perl(Getopt::Long)
 Patch0:			libvpx-1.7.0-leave-fortify-source-on.patch
 Patch1:			0001-Fix-bug-with-smaller-width-bigger-size.patch
 Patch2:			0001-VP8-disallow-thread-count-changes.patch
+Patch3:			0001-Fix-integer-overflows-in-calc-of-stride_in_bytes.patch
+Patch4:			0002-Apply-stride_align-to-byte-count-not-pixel-count.patch
+Patch5:			0003-Fix-a-bug-in-alloc_size-for-high-bit-depths.patch
 
 %description
 libvpx provides the VP8/VP9 SDK, which allows you to integrate your applications 
@@ -52,8 +55,16 @@ and decoder.
 %patch0 -p1 -b .leave-fs-on
 %patch1 -p1 -b .p1
 %patch2 -p1 -b .p2
+%patch3 -p1 -b .0003
+%patch4 -p1 -b .0004
+%patch5 -p1 -b .0005
 
 %build
+# This package fails to build with LTO due to undefined symbols.  LTO
+# was disabled in OpenSuSE as well, but with no real explanation why
+# beyond the undefined symbols.  It really shold be investigated further.
+# Disable LTO
+%define _lto_cflags %{nil}
 
 %ifarch %{ix86}
 %global vpxtarget x86-linux-gcc
@@ -237,13 +248,18 @@ rm -rf %{buildroot}%{_prefix}/src
 %{_bindir}/*
 
 %changelog
+* Fri Jul 5 2024 Wim Taymans <wtaymans@redhat.com> - 1.9.0-8
+- Add patch to fix integer overflows.
+- Disable LTO to fix build
+- Resolves: RHEL-58144
+
 * Thu Oct 5 2023 Wim Taymans <wtaymans@redhat.com> - 1.9.0-7
 - Add patch for CVE-2023-5217
-- Resolves: RHEL-10629
+- Resolves: RHEL-10631
 
 * Tue Oct 3 2023 Wim Taymans <wtaymans@redhat.com> - 1.9.0-6
 - Add patch for CVE-2023-44488
-- Resolves: RHEL-11634
+- Resolves: RHEL-11636
 
 * Mon Aug 09 2021 Mohan Boddu <mboddu@redhat.com> - 1.9.0-5
 - Rebuilt for IMA sigs, glibc 2.34, aarch64 flags
