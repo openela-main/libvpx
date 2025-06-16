@@ -6,7 +6,7 @@
 Name:			libvpx
 Summary:		VP8/VP9 Video Codec SDK
 Version:		1.9.0
-Release:		8%{?dist}
+Release:		9%{?dist}
 License:		BSD
 #Source0:		http://downloads.webmproject.org/releases/webm/%{name}-%{version}.tar.bz2
 Source0:		https://github.com/webmproject/libvpx/archive/v%{version}.tar.gz
@@ -28,6 +28,7 @@ Patch2:			0001-VP8-disallow-thread-count-changes.patch
 Patch3:			0001-Fix-integer-overflows-in-calc-of-stride_in_bytes.patch
 Patch4:			0002-Apply-stride_align-to-byte-count-not-pixel-count.patch
 Patch5:			0003-Fix-a-bug-in-alloc_size-for-high-bit-depths.patch
+Patch6:			0001-vpx_codec_enc_init_multi-fix-double-free-on-init-fai.patch
 
 %description
 libvpx provides the VP8/VP9 SDK, which allows you to integrate your applications 
@@ -58,6 +59,7 @@ and decoder.
 %patch3 -p1 -b .0003
 %patch4 -p1 -b .0004
 %patch5 -p1 -b .0005
+%patch6 -p1 -b .0006
 
 %build
 # This package fails to build with LTO due to undefined symbols.  LTO
@@ -248,10 +250,14 @@ rm -rf %{buildroot}%{_prefix}/src
 %{_bindir}/*
 
 %changelog
+* Tue Jun 03 2025 Wim Taymans <wtaymans@redhat.com> - 1.9.0-9
+- Add patch for double free
+  Resolves: RHEL-93908
+
 * Fri Jul 5 2024 Wim Taymans <wtaymans@redhat.com> - 1.9.0-8
 - Add patch to fix integer overflows.
 - Disable LTO to fix build
-- Resolves: RHEL-58144
+- Resolves: RHEL-40655
 
 * Thu Oct 5 2023 Wim Taymans <wtaymans@redhat.com> - 1.9.0-7
 - Add patch for CVE-2023-5217
