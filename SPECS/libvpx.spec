@@ -6,7 +6,7 @@
 Name:			libvpx
 Summary:		VP8/VP9 Video Codec SDK
 Version:		1.7.0
-Release:		11%{?dist}
+Release:		12%{?dist}
 License:		BSD
 Group:			System Environment/Libraries
 #Source0:		http://downloads.webmproject.org/releases/webm/%{name}-%{version}.tar.bz2
@@ -31,6 +31,7 @@ Patch7:			0001-Fix-integer-overflows-in-calc-of-stride_in_bytes.patch
 Patch8:			0002-Apply-stride_align-to-byte-count-not-pixel-count.patch
 Patch9:			0003-Fix-a-bug-in-alloc_size-for-high-bit-depths.patch
 Patch10:		include-limits.patch
+Patch11:		0001-vpx_codec_enc_init_multi-fix-double-free-on-init-fai.patch
 
 %description
 libvpx provides the VP8/VP9 SDK, which allows you to integrate your applications 
@@ -68,6 +69,7 @@ and decoder.
 %patch8 -p1 -b .0008
 %patch9 -p1 -b .0009
 %patch10 -p1 -b .0010
+%patch11 -p1 -b .0011
 
 %build
 %ifarch %{ix86}
@@ -257,6 +259,10 @@ rm -rf %{buildroot}%{_prefix}/src
 %{_bindir}/*
 
 %changelog
+* Tue Jun 03 2025 Wim Taymans <wtaymans@redhat.com> - 1.7.0-12
+- Add patch for double free
+  Resolves: RHEL-93914
+
 * Fri Jul 5 2024 Wim Taymans <wtaymans@redhat.com> - 1.7.0-11
 - Add patch to fix integer overflows.
 - Fix compilation by including limits.h
