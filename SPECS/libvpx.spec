@@ -6,7 +6,7 @@
 Name:			libvpx
 Summary:		VP8/VP9 Video Codec SDK
 Version:		1.14.1
-Release:		3%{?dist}
+Release:		5%{?dist}
 License:		BSD-3-Clause
 URL:			http://www.webmproject.org/code/
 Source0:		https://github.com/webmproject/libvpx/archive/v%{version}.tar.gz
@@ -205,9 +205,17 @@ rm -rf %{buildroot}%{_prefix}/src
 %{_bindir}/*
 
 %changelog
+* Fri Jun 13 2025 Wim Taymans <wtaymans@redhat.com> - 1.14.1-5
+- Bump version for rebuild
+  Resolves: RHEL-93904
+
+* Tue Jun 03 2025 Wim Taymans <wtaymans@redhat.com> - 1.14.1-4
+- Bump version for rebuild
+  Resolves: RHEL-93904
+
 * Tue Jun 03 2025 Wim Taymans <wtaymans@redhat.com> - 1.14.1-3
 - Add patch for double free
-  Resolves: RHEL-93905
+  Resolves: RHEL-93904
 
 * Tue Oct 29 2024 Troy Dawson <tdawson@redhat.com> - 1.14.1-2
 - Bump release for October 2024 mass rebuild:
