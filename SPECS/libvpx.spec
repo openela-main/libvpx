@@ -6,7 +6,7 @@
 Name:			libvpx
 Summary:		VP8/VP9 Video Codec SDK
 Version:		1.7.0
-Release:		12%{?dist}
+Release:		13%{?dist}
 License:		BSD
 Group:			System Environment/Libraries
 #Source0:		http://downloads.webmproject.org/releases/webm/%{name}-%{version}.tar.bz2
@@ -32,6 +32,7 @@ Patch8:			0002-Apply-stride_align-to-byte-count-not-pixel-count.patch
 Patch9:			0003-Fix-a-bug-in-alloc_size-for-high-bit-depths.patch
 Patch10:		include-limits.patch
 Patch11:		0001-vpx_codec_enc_init_multi-fix-double-free-on-init-fai.patch
+Patch12:		0001-write_superframe_index-return-0-if-buffer-is-full.patch
 
 %description
 libvpx provides the VP8/VP9 SDK, which allows you to integrate your applications 
@@ -70,6 +71,7 @@ and decoder.
 %patch9 -p1 -b .0009
 %patch10 -p1 -b .0010
 %patch11 -p1 -b .0011
+%patch12 -p1 -b .0012
 
 %build
 %ifarch %{ix86}
@@ -259,6 +261,10 @@ rm -rf %{buildroot}%{_prefix}/src
 %{_bindir}/*
 
 %changelog
+* Thu Mar 05 2026 Wim Taymans <wtaymans@redhat.com> - 1.7.0-13
+- Add patch for superframe index full
+  Resolves: RHEL-150334
+
 * Tue Jun 03 2025 Wim Taymans <wtaymans@redhat.com> - 1.7.0-12
 - Add patch for double free
   Resolves: RHEL-93914
