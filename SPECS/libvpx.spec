@@ -6,7 +6,7 @@
 Name:			libvpx
 Summary:		VP8/VP9 Video Codec SDK
 Version:		1.9.0
-Release:		9%{?dist}
+Release:		10%{?dist}
 License:		BSD
 #Source0:		http://downloads.webmproject.org/releases/webm/%{name}-%{version}.tar.bz2
 Source0:		https://github.com/webmproject/libvpx/archive/v%{version}.tar.gz
@@ -29,6 +29,7 @@ Patch3:			0001-Fix-integer-overflows-in-calc-of-stride_in_bytes.patch
 Patch4:			0002-Apply-stride_align-to-byte-count-not-pixel-count.patch
 Patch5:			0003-Fix-a-bug-in-alloc_size-for-high-bit-depths.patch
 Patch6:			0001-vpx_codec_enc_init_multi-fix-double-free-on-init-fai.patch
+Patch7:			0001-write_superframe_index-return-0-if-buffer-is-full.patch
 
 %description
 libvpx provides the VP8/VP9 SDK, which allows you to integrate your applications 
@@ -60,6 +61,7 @@ and decoder.
 %patch4 -p1 -b .0004
 %patch5 -p1 -b .0005
 %patch6 -p1 -b .0006
+%patch7 -p1 -b .0007
 
 %build
 # This package fails to build with LTO due to undefined symbols.  LTO
@@ -250,9 +252,13 @@ rm -rf %{buildroot}%{_prefix}/src
 %{_bindir}/*
 
 %changelog
+* Thu Mar 05 2026 Wim Taymans <wtaymans@redhat.com> - 1.9.0-10
+- Add patch for superindex full
+  Resolves: RHEL-150344
+
 * Tue Jun 03 2025 Wim Taymans <wtaymans@redhat.com> - 1.9.0-9
 - Add patch for double free
-  Resolves: RHEL-93908
+  Resolves: RHEL-93910
 
 * Fri Jul 5 2024 Wim Taymans <wtaymans@redhat.com> - 1.9.0-8
 - Add patch to fix integer overflows.
