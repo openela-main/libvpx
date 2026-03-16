@@ -6,7 +6,7 @@
 Name:			libvpx
 Summary:		VP8/VP9 Video Codec SDK
 Version:		1.14.1
-Release:		5%{?dist}
+Release:		6%{?dist}
 License:		BSD-3-Clause
 URL:			http://www.webmproject.org/code/
 Source0:		https://github.com/webmproject/libvpx/archive/v%{version}.tar.gz
@@ -24,6 +24,7 @@ BuildRequires:		nasm
 BuildRequires:		doxygen, php-cli, perl(Getopt::Long)
 
 Patch1:                 0001-vpx_codec_enc_init_multi-fix-double-free-on-init-fai.patch
+Patch2:			0001-write_superframe_index-return-0-if-buffer-is-full.patch
 
 %description
 libvpx provides the VP8/VP9 SDK, which allows you to integrate your applications
@@ -50,6 +51,7 @@ and decoder.
 %setup -q -n libvpx-%{version}
 %patch -P0 -p1 -b .fortify-source-on
 %patch -P1 -p1 -b .0001
+%patch -P2 -p1 -b .0002
 
 %build
 
@@ -205,6 +207,10 @@ rm -rf %{buildroot}%{_prefix}/src
 %{_bindir}/*
 
 %changelog
+* Thu Mar 05 2026 Wim Taymans <wtaymans@redhat.com> - 1.14.1-6
+- Add patch for superindex full
+  Resolves: RHEL-150332
+
 * Fri Jun 13 2025 Wim Taymans <wtaymans@redhat.com> - 1.14.1-5
 - Bump version for rebuild
   Resolves: RHEL-93904
